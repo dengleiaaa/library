@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+
+	<!-- spring-mybatis整合配置文件：配置方式 -->
+	<!-- 1.配置数据源 spring-jdbc包为程序员提供了创建dataSource的方法 利用spring创建dataSource对象 -->
+	<bean name="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="com.mysql.cj.jdbc.Driver"></property>
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/library?characterEncoding=utf8&amp;serverTimezone=UTC"></property>
+		<property name="username" value="root"></property>
+		<property name="password" value="123456"></property>
+	</bean>
+
+	<!-- 2.创建SqlSessionFactory mybatis-spring.jar中提供了创建factory的方法 -->
+	<bean name="factory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+
+	<!-- 3.利用扫描器扫描mapper创建实现类对象 -->
+	<!-- mybatis-spring帮我们提供了创建实现类对象的方法 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 在扫描mapper时自动创建对应的实现类对象，实现类对象名就是mapper -->
+		<property name="basePackage"
+			value="com.woniuxy.interfacemapper"></property>
+	</bean>
+
+	<!-- 4.配置service -->
+	<bean name="userService"
+		class="com.woniuxy.userservice.UserService">
+		<property name="mapper" ref="userInterface"></property>
+	</bean>
+
+	<bean name="bookService"
+		class="com.woniuxy.userservice.BookService">
+		<property name="mapper" ref="bookInterface"></property>
+	</bean>
+
+	<!-- 5.配置action -->
+	<bean name="UserAction" class="com.woniuxy.action.UserAction"
+		scope="prototype">
+		<property name="userService" ref="userService"></property>
+	</bean>
+
+	<bean name="BookAction" class="com.woniuxy.action.BookAction"
+		scope="prototype">
+		<property name="bookService" ref="bookService"></property>
+		<property name="userService" ref="userService"></property>
+	</bean>
+
+
+	<bean id="txManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+	</tx:advice>
+	
+	<aop:config>
+		<aop:pointcut
+			expression="execution(* com.woniuxy.userservice.*.*())" id="pt1" />
+		<aop:pointcut
+			expression="execution(* com.woniuxy.userservice.*.*(..))" id="pt2" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pt1" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pt2" />
+	</aop:config>
+
+</beans>
