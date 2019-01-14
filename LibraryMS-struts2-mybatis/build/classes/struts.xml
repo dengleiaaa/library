@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+	<constant name="struts.enable.DynamicMethodInvocation"
+		value="true" />
+	<package name="user" extends="json-default" namespace="/"
+		strict-method-invocation="false">
+		<interceptors>
+			<interceptor name="UserInterceptor"
+				class="com.woniuxy.Interceptor.UserInterceptor"></interceptor>
+		</interceptors>
+		<global-results>
+			<result name="login">../index.html</result>
+		</global-results>
+
+		<global-allowed-methods>regex:.*</global-allowed-methods>
+		<!-- 登录 注册 -->
+		<action name="login" class="com.woniuxy.action.UserAction"
+			method="login">
+			<result name="failed">/index.html</result>
+			<result name="cc" type="json">
+				<param name="root">results</param>
+			</result>
+			<interceptor-ref name="UserInterceptor">
+				<param name="excludeMethods">login,regiest,allbook,booktype,logoff</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<action name="regiest" class="com.woniuxy.action.UserAction"
+			method="regiest">
+			<result name="success" type="json">
+				<param name="root">results</param>
+			</result>
+			<result name="failed" type="json">
+				<param name="root">results</param>
+			</result>
+			<interceptor-ref name="UserInterceptor">
+				<param name="excludeMethods">login,regiest,allbook,booktype,logoff</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack" />
+		</action>
+		
+		<action name="logoff" class="com.woniuxy.action.UserAction"
+			method="logoff">
+			<result name="success" type="json">
+				<param name="root">results</param>
+			</result>
+			<interceptor-ref name="UserInterceptor">
+				<param name="excludeMethods">login,regiest,allbook,booktype,logoff</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack" />
+		</action>
+		<!-- book -->
+		<action name="book_*" class="com.woniuxy.action.BookAction"
+			method="{1}">
+			<result name="success" type="json">
+				<param name="excludeProperties">abklist</param>
+			</result>
+			<interceptor-ref name="UserInterceptor">
+				<param name="excludeMethods">login,regiest,allbook,booktype,logoff</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack" />
+		</action>
+
+	</package>
+</struts>
