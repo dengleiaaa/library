@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+<!-- 配置用户自定义realm对象 -->
+		<bean id="customRealm" class="com.woniuxy.shiro.UserRealm">
+			<property name="credentialsMatcher">
+				<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+					<property name="hashAlgorithmName" value="MD5"></property>
+					<property name="hashIterations" value="1024"></property>
+				</bean>
+			</property>
+		</bean>
+		
+		<!-- 安全管理器 -->
+		<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+			<property name="realm" ref="customRealm"></property>
+			<property name="rememberMeManager" ref="RememberMeManager"></property>
+		</bean>
+		
+		<!-- shiro生命周期管理对象 -->
+		<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"></bean>
+		
+		
+		<!-- 如果要使用shiro的注解 -->
+		<!-- <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+			<property name="securityManager" ref="securityManager"></property>
+		</bean> -->
+		<bean id="logout" class="org.apache.shiro.web.filter.authc.LogoutFilter"> 
+        	<property name="redirectUrl" value="webpage/login.html"/> 
+    	</bean>
+    	
+    	<bean id="rolefilter" class="com.woniuxy.filter.RoleFilter"> 
+        	 
+    	</bean>
+		<!-- shiro提供的过滤器 -->
+		<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+			<!-- shiroFilter进行路径过滤必须依赖安全管理器 -->
+			<property name="securityManager" ref="securityManager"></property>
+			<!-- 身份认证失败后要跳转的地址 -->
+			<property name="loginUrl" value="/webpage/login.html"></property>
+			<!-- 授权失败，配置失败的地址 -->
+			<property name="unauthorizedUrl" value="/webpage/404.html"></property>
+			<property name="filterChainDefinitions">
+				<value>
+					  /webpage/css/** = anon
+					  /webpage/data/** = anon
+					  /webpage/fonts/** = anon
+					  /webpage/icons-reference/** = anon
+					  /webpage/img/** = anon
+					  /webpage/imgs/** = anon
+					  /webpage/js/** = anon
+					  /webpage/myjs/** = anon
+					  /webpage/vendor/** = anon
+					 /webpage/login.html = anon
+					 /webpage/register.html = anon
+					 
+					 <!-- /webpage/main.jsp = authc
+					/webpage/room.jsp = authc
+					/webpage/student.jsp = authc
+					/webpage/classes.jsp = authc
+					/webpage/accmt.jsp = authc -->
+					<!-- anon 是shiro提供的过滤器，代表匿名访问，无需认证直接访问 -->
+					<!--  /html/login.html = anon
+					/login = anon
+					
+					authc 是shiro提供的过滤器，必须认证成功才能访问当前资源
+					/webpage/success.html = authc
+					/loginout = logout
+					
+					配置权限 
+					/html/admin.html = roles[admin]
+					/html/supper.html = roles[supper]
+					/** = authc  -->
+					
+					/webpage/room.jsp = rolefilter[管理员,房间]
+					/webpage/student.jsp = rolefilter[管理员,学生]
+					/webpage/classes.jsp = rolefilter[管理员,班级]	
+	                /webpage/accmt.jsp = rolefilter[管理员]	
+<!-- 	                管理员
+班级
+学生
+房间
+游客 -->
+	                <!-- /webpage/room.jsp = user
+					/webpage/student.jsp = user
+					/webpage/classes.jsp = user	 -->			
+					
+                   
+					
+					
+					/logout = logout
+					
+				</value>
+			</property>
+				<property name="filters">
+		    	<map>
+		        	<entry key="logout" value-ref="logout" />
+		        	<entry key="rolefilter" value-ref="rolefilter"/>
+		    	</map>
+		</property>
+		</bean>
+
+<!-- 会话管理器 -->
+<bean id="SessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+	<property name="globalSessionTimeout" value="600000"></property>
+	<property name="deleteInvalidSessions" value="true"></property>
+
+</bean>
+
+<!-- rememberMe管理器 -->
+<bean id="RememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+	<property name="cookie" ref="RememberMeCookie"></property>
+</bean>
+	
+<!--记住我cookie  -->
+<bean id="RememberMeCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+ <constructor-arg value="rememberMe"></constructor-arg>
+ <property name="maxAge" value="2592000"></property>
+</bean>	
+
+
+
+
+
+</beans>

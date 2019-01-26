@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<mvc:annotation-driven/>
+	
+	<mvc:default-servlet-handler/>
+	
+	<!-- json解析器 -->
+	<bean id="jackson" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<property name="supportedMediaTypes">
+			<list>
+				<value>application/json;charset=utf-8</value> 
+			</list>
+		</property>
+	</bean>
+	<!-- 验证 -->
+	<!-- <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="providerClass" value="org.hibernate.validator.HibernateValidator"></property>
+	</bean> -->
+
+	<!-- 文件上传解析器 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize">
+			<value>10737418240</value>
+		</property>
+	</bean>
+	
+	<!-- 异常处理解析器 -->
+	 <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<!-- 设置系统默认处理的页面 -->
+		<property name="defaultErrorView" value="webpage/404.html"></property>
+		<!-- 定义异常处理界面，获取错误信息的变量  exception -->
+		<property name="exceptionAttribute" value="webpage/500.html"></property>
+		<!-- 定义需要特殊处理的异常 -->
+		<!-- <property name="exceptionMappings">
+			<props>
+				<prop key="com.project.exception.MyException">500.html</prop>
+			</props>
+		</property> -->
+	</bean> 
+	
+	
+	
+	<!-- 扫描 -->
+	<context:component-scan base-package="com.woniuxy.controller"></context:component-scan>
+
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"></bean>
+</beans>
