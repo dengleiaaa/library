@@ -37,23 +37,22 @@ public class RoomController {
 
 	@RequestMapping("/addroom")
 	public Map<String, Object> addRoom(RoomPojo roomPojo, LandlordPojo landlordPojo) {
-		Map<String, Object>map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>();
 		String result = "";
 		List<LandlordPojo> landlordPojo1 = LandLordService.selTel(landlordPojo);
-		
+
 		if (!landlordPojo1.isEmpty()) {
-			
-			map.put("result","电话重复,请重新输入");
+			map.put("result", "电话重复,请重新输入");
 			return map;
 		}
 		result = LandLordService.addLandlord(landlordPojo);
-		
+
 		if (result.equals("添加成功")) {
 			int lid = LandLordService.selLidByLname(landlordPojo);
 			roomPojo.setR_lid(lid);
 			result = RoomService.insertRoom(roomPojo);
 		}
-		map.put("result",result);
+		map.put("result", result);
 		return map;
 
 	}
@@ -62,7 +61,7 @@ public class RoomController {
 	public Map<String, Object> roomInfo(int rpage) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<AllRoomInfoPojo> list = RoomService.selAllRoom(rpage);
-		
+
 		int total = RoomService.selcountNum();
 		for (int i = 0; i < list.size(); i++) {
 			int checkinpeople = RoomService.selCheckInPeople(list.get(i).getR_id());
@@ -75,7 +74,8 @@ public class RoomController {
 	}
 
 	@RequestMapping("/searchroom")
-	public Map<String, Object> searchRoom(int page, String r_address, String r_state, String r_kezhu, String r_sextype) {
+	public Map<String, Object> searchRoom(int page, String r_address, String r_state, String r_kezhu,
+			String r_sextype) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		String result = "";
 		if (r_state.equals("不限")) {
@@ -106,8 +106,7 @@ public class RoomController {
 //					iterator.remove();
 //				}
 //			}
-			
-			
+
 		}
 		if (list1.isEmpty()) {
 			result = "当前查询条件没有符合的记录";
@@ -128,7 +127,7 @@ public class RoomController {
 		int checkinpeople = RoomService.selCheckInPeople(roomid);
 		allRoomInfoPojo.setCheckinpeople(checkinpeople);
 		int handelNum = RoomService.selCountHandel(roomid);
-		if (handelNum==0) {
+		if (handelNum == 0) {
 			RoomService.updateStateCorrect(roomid);
 		}
 		List<AllStudentPojo> list = StudentService.selCheckStuByRid(roomid);
@@ -159,7 +158,7 @@ public class RoomController {
 		String result = "";
 		Map<String, Object> map = new HashMap<String, Object>();
 		int handelNum = RoomService.selCountHandel(rid);
-		if (handelNum==0) {
+		if (handelNum == 0) {
 			RoomService.updateStateCorrect(rid);
 		}
 		List<checkInPojo> checkInPojo = CheckInService.selCheckRoomByRid(rid);
@@ -167,9 +166,9 @@ public class RoomController {
 			result = "该房间还有人住,不能删除";
 			map.put("result", result);
 			return map;
-		}else {
+		} else {
 			int row = RoomService.delRoomByid(rid);
-			if (row>0) {
+			if (row > 0) {
 				result = "删除成功";
 				map.put("result", result);
 				return map;
@@ -180,5 +179,4 @@ public class RoomController {
 		return map;
 	}
 
-	
 }

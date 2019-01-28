@@ -122,7 +122,7 @@ tr.focus{
 		</ul>
 	</div>
                     </div>
-     <button class="btn btn-info" data-toggle="modal" data-target="#myModal" style="margin: 39px 0px 0px 449px;"onclick="addclassmotai()">添加班级</button>
+     <button class="btn btn-info" data-toggle="modal" data-target="#myModal" style="margin: 39px 0px 0px 449px;"onclick="addclassmotai()" id="addc">添加班级</button>
      <button type="button" class="btn btn-warning" style="margin: -59px 0px 0px 719px;" onclick="deleteclass()">删除班级</button>
 
             </div>

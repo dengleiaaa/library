@@ -173,7 +173,7 @@ table{
 	</div>
 	<div style="border: 0px red solid; width: 500px;height: 200px;margin: 439px 0px 0px -570px;">
      
-     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" style="margin: -33px 0px 0px 160px;">添加房间</button>
+     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" style="margin: -33px 0px 0px 160px;" id="addr">添加房间</button>
      <button type="button" class="btn btn-warning" style="margin: -33px 0px 2px 90px"  data-target="#deleteModal" id="roomq" onclick="deletealertroom()">删除房间</button>
      <button type="button" class="btn btn-danger"  data-target="#roomModal" style="margin: 116px 0px 0px -262px;" onclick="roominfo()" id="roomw">房间信息</button>
      <button type="button" class="btn btn-info" style="margin: 116px 0px 0px 91px;" data-target="#roomtoolModal" onclick="roomtoolmotai()" id="roome">房间设施</button>

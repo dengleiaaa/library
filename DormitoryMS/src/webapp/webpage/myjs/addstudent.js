@@ -26,6 +26,9 @@ function addstudent() {
 				swal(data.result);
 			}
 			if (data.result == "添加成功") {
+				$('#myModal').map(function() {//用id选择器选中要关闭的模态框
+	   			       $(this).modal('hide'); //关闭
+	   			});
 				swal({title:"添加成功！",
 			        text:"已成功添加",
 			        type:"success"},function(){allstudent(parseInt($("#now").html()))}

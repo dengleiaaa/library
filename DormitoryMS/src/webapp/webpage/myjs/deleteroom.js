@@ -21,11 +21,16 @@ function deleteroom(){ //jquery获取复选框值
   				
   			}
 			if (data.result == "删除成功") {
+				$('#deleteModal').map(function() {//用id选择器选中要关闭的模态框
+	  	    	       $(this).modal('hide');
+			    });
 				swal({title:"删除成功！",
 			        text:"已成功删除",
-			        type:"success"},function(){allroom(parseInt($("#now").html()))}
+			        type:"success"},function(){
+			        	 
+			        	allroom(parseInt($("#now").html()))}
 			    )
-					
+			   	
   			}
 		}
 	});

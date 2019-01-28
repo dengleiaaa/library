@@ -143,7 +143,7 @@ height: 150px;
 		</ul>
 	</div>
      
-     <button onclick="checkinfomotai()" type="button" class="btn btn-success" style="margin: -50px 0px 0px 160px;" data-toggle="modal" data-target="#myModal">学生入住</button>
+     <button onclick="checkinfomotai()" type="button" class="btn btn-success" style="margin: -50px 0px 0px 160px;" data-toggle="modal" data-target="#myModal" id="sturuzhu">学生入住</button>
      <button type="button" class="btn btn-warning" style="margin: -50px 0px 2px 90px;"  data-target="#deleteModal"  id="stumtz" onclick="deletealert()">学生退房</button>
      <button type="button" class="btn btn-danger" style="margin: 139px 0px 0px -262px;"  data-target="#changeroom" onclick="changeroommotai()" id="stumtx">学生换房</button>
      <button type="button" class="btn btn-info" style="margin: 139px 0px 0px 91px;"  data-target="#stuinfoModal" onclick="studentinfo()" id="stumtc">学生信息</button>

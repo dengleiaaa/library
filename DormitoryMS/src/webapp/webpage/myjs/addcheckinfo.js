@@ -1,4 +1,10 @@
 	function addcheckinfo() { 
+		if(!(/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/.test($("#stel").val()))){ 
+  		  swal("不是正确的手机号"); 
+  		  return; 
+  		 } 
+		
+		
 		/*var formData = new FormData($('#fileupform')[0]);*/
 		var formdata = new FormData();
 		
@@ -39,7 +45,9 @@
   				 swal(data.result);
   			}
   			if (data.result == "添加成功") {
-  				
+  				$('#myModal').map(function() {//用id选择器选中要关闭的模态框
+   			       $(this).modal('hide'); //关闭
+   			});
   				swal({title:"添加成功！",
 			        text:"已成功添加",
 			        type:"success"},function(){allstudent(parseInt($("#now").html()))}

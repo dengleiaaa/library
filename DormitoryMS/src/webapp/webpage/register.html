@@ -87,7 +87,16 @@
     <script src="js/front.js"></script>
     <script type="text/javascript">
     function regiest() {
-		$.ajax({
+    	if(!(/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/.test($("#username").val()))){ 
+    		  swal("不是正确的手机号"); 
+    		  return; 
+    		 } 
+    	if($("#password").val().length<6){ 
+  		  swal("密码必须大于6位"); 
+  		  return; 
+  		 } 
+    	
+    	$.ajax({
 			url : "../user/register",
 			type : "post",
 			data:{
@@ -99,7 +108,7 @@
 			success : function(data) {
 				if (data[0] == "注册成功") {
 					swal(data[0]);
-					window.location.href = "../index.html";
+					window.location.href = "login.html";
 				}else {
 					swal(data[0]);
 					

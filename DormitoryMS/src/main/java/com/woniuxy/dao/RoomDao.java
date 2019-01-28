@@ -2,7 +2,6 @@ package com.woniuxy.dao;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -15,7 +14,7 @@ public interface RoomDao {
 	@Insert("insert into room(r_address,r_type,r_population,r_sextype,r_rent,r_renttype,r_renttime,r_lid,r_state) values(#{r_address},#{r_type},#{r_population},#{r_sextype},#{r_rent},#{r_renttype},#{r_renttime},#{r_lid},#{r_state})")
 	int insertRoom(RoomPojo roomPojo);
 
-	@Select("select * from allroom limit #{pages},5")
+	@Select("select * from allroom where flag=0 limit #{pages},5")
 	List<AllRoomInfoPojo> AllGoods(int pages);
 
 	@Select("select COUNT(r_id) count from room")
@@ -51,7 +50,7 @@ public interface RoomDao {
 	@Update("update room set r_state='正常' where r_id=#{arg0}")
 	int updateStateCt(int rid);
 
-	@Delete("delete from room where r_id=#{arg0}")
+	@Update("update room set flag=1 where r_id=#{arg0}")
 	int delRoom(int rid);
 
 	

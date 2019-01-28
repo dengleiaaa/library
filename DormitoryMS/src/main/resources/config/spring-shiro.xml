@@ -65,6 +65,8 @@
 					 /webpage/login.html = anon
 					 /webpage/register.html = anon
 					 
+					 
+					 
 					 <!-- /webpage/main.jsp = authc
 					/webpage/room.jsp = authc
 					/webpage/student.jsp = authc
@@ -82,6 +84,11 @@
 					/html/admin.html = roles[admin]
 					/html/supper.html = roles[supper]
 					/** = authc  -->
+					
+					
+					
+					
+					
 					
 					/webpage/room.jsp = rolefilter[管理员,房间]
 					/webpage/student.jsp = rolefilter[管理员,学生]

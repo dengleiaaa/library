@@ -16,14 +16,7 @@ function changeroom(){ //jquery获取复选框值
 			        text:"已成功换房",
 			        type:"success"},function(){allstudent(parseInt($("#now").html()))}
 			    )
-  			
-  				
   			}
-			
-			
-			
-			
-  			
 		}
 	});
 }); 

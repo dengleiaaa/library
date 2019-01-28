@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -31,7 +33,7 @@ public class UserController {
 	private List<String> list = new ArrayList<>();
 
 	@RequestMapping("/login")
-	public List<String> Login(UserPojo userPojo, boolean rememberMe) {
+	public List<String> Login(HttpSession session,UserPojo userPojo, boolean rememberMe) {
 		System.out.println(userPojo);
 		System.out.println(rememberMe + "        ********************");
 		// SecurityUtils是shiro提供的工具包，包含了subject的获取
@@ -46,6 +48,7 @@ public class UserController {
 				// 调用login进行认证
 				subject.login(token);
 				token.setRememberMe(rememberMe);
+				session.setAttribute("user", userPojo.getUserAcc());
 				System.out.println("登陆成功");
 				list.clear();
 				list.add("登陆成功");
